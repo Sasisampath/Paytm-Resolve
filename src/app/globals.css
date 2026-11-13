@@ -1,0 +1,113 @@
+@import "tailwindcss";
+
+:root {
+  --navy: #192f7c;
+  --cyan: #00baf2;
+  --page: #f7f9fc;
+  --cyan-soft: #eaf8fd;
+  --ink: #111111;
+  --muted: #64748b;
+  --line: #e5eaf0;
+  --success: #16a34a;
+  --warning: #d97706;
+  --danger: #dc2626;
+}
+
+@theme inline {
+  --color-navy: var(--navy);
+  --color-cyan: var(--cyan);
+  --color-page: var(--page);
+  --color-cyan-soft: var(--cyan-soft);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+}
+
+html {
+  background: #eef2f7;
+}
+
+body {
+  background: var(--page);
+  color: var(--ink);
+  font-family: var(--font-inter), system-ui, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 2px;
+}
+
+/* ---------- Splash: pure CSS timeline (1400ms) ----------
+   0-250    "Paytm" fades in, scale .96 -> 1
+   250-750  "Resolve" wipes in left -> right
+   750-1050 checkmark wipes in
+   1050-1250 hold
+   1250-1400 overlay fades into Home                          */
+:root {
+  /* Split points of the supplied wordmark (1850px wide crop) */
+  --cut-a: 40.2%; /* gap between "Paytm" and "Resolve" */
+  --cut-b: 87.1%; /* gap between "Resolve" and the checkmark */
+  --splash-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+html[data-splash="done"] .splash {
+  display: none;
+}
+
+.splash {
+  animation: splash-out 150ms ease-out 1250ms both;
+}
+.splash-paytm {
+  clip-path: inset(0 calc(100% - var(--cut-a)) 0 0);
+  animation: paytm-in 250ms var(--splash-ease) both;
+}
+.splash-resolve {
+  clip-path: inset(0 calc(100% - var(--cut-b)) 0 var(--cut-a));
+  animation: resolve-in 500ms var(--splash-ease) 250ms both;
+}
+.splash-check {
+  clip-path: inset(0 0 0 var(--cut-b));
+  animation: check-in 300ms var(--splash-ease) 750ms both;
+}
+
+@keyframes paytm-in {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes resolve-in {
+  from { clip-path: inset(0 calc(100% - var(--cut-a)) 0 var(--cut-a)); }
+  to { clip-path: inset(0 calc(100% - var(--cut-b)) 0 var(--cut-a)); }
+}
+@keyframes check-in {
+  from { clip-path: inset(0 calc(100% - var(--cut-b)) 0 var(--cut-b)); }
+  to { clip-path: inset(0 0 0 var(--cut-b)); }
+}
+@keyframes splash-out {
+  from { opacity: 1; visibility: visible; }
+  to { opacity: 0; visibility: hidden; pointer-events: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .splash { animation: splash-out 150ms ease-out 700ms both; }
+  .splash-paytm, .splash-resolve, .splash-check { animation: none; opacity: 1; }
+  .splash-resolve { clip-path: inset(0 calc(100% - var(--cut-b)) 0 var(--cut-a)); }
+  .splash-check { clip-path: inset(0 0 0 var(--cut-b)); }
+}
+
+/* Bottom sheet entrance */
+.sheet[open] {
+  animation: sheet-up 220ms var(--splash-ease);
+}
+@keyframes sheet-up {
+  from { transform: translateY(24px); opacity: 0; }
+  to { transform: none; opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sheet[open] { animation: none; }
+}
