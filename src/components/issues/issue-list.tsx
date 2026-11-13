@@ -1,9 +1,9 @@
 import Image from "next/image";
-import type { PaymentIssue } from "@/data/issues";
+import type { IssueSummary } from "@/data/issues";
 import { IssueRow } from "./issue-row";
 
 /** Shows either the populated list or the empty state, never both. */
-export function IssueList({ issues }: { issues: PaymentIssue[] }) {
+export function IssueList({ issues }: { issues: IssueSummary[] }) {
   if (issues.length === 0) {
     return (
       <div className="flex flex-col items-center rounded-2xl border border-line bg-white px-6 py-8 text-center">

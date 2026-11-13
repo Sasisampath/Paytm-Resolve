@@ -2,8 +2,13 @@
 
 import { useId } from "react";
 import { Clock3 } from "lucide-react";
+import { DEMO_PAYMENT_DATE } from "@/lib/payments/validation";
 import { cn } from "@/lib/utils";
 import { FieldError } from "./field-error";
+
+const demoDateLabel = new Intl.DateTimeFormat("en-IN", {
+  day: "numeric", month: "long", year: "numeric", timeZone: "UTC",
+}).format(new Date(DEMO_PAYMENT_DATE));
 
 export function PaymentTimeField({
   value,
@@ -49,7 +54,7 @@ export function PaymentTimeField({
         />
       </div>
       <p id={`${id}-hint`} className="mt-1.5 text-sm text-muted">
-        An approximate time helps narrow the search.
+        Demo date: {demoDateLabel}. Enter the approximate time in IST.
       </p>
       <FieldError id={`${id}-error`} message={error} />
     </div>

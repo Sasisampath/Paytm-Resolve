@@ -1,9 +1,9 @@
 /**
  * Payment issue cases (synthetic demo data). These are customer *claims*.
  * A claim, screenshot or bank debit is NOT proof the merchant was paid, and a
- * missing match is NOT proof of fraud. Verification arrives in Phase 2.
+ * missing match is NOT proof of fraud. Case evidence is a snapshot of the original report.
  */
-export type IssueStatus = "not_verified" | "awaiting_status_check" | "resolved";
+export type IssueStatus = "open" | "not_verified" | "awaiting_status_check" | "resolved";
 
 export type EvidenceState = "provided" | "not_provided" | "not_checked";
 
@@ -23,7 +23,10 @@ export type PaymentIssue = {
   evidence: EvidenceItem[];
 };
 
+export type IssueSummary = Omit<PaymentIssue, "reportedAt" | "evidence">;
+
 export const issueStatusMeta: Record<IssueStatus, { label: string; hint: string }> = {
+  open: { label: "Open", hint: "This case is open." },
   not_verified: {
     label: "Not verified",
     hint: "No matching confirmed payment has been checked yet.",
@@ -51,7 +54,7 @@ export const issues: PaymentIssue[] = [
       {
         label: "Matching merchant record",
         state: "not_checked",
-        note: "Not checked yet. Verification is coming in Phase 2.",
+        note: "No verification result was recorded for this case.",
       },
       { label: "UPI reference number", state: "not_provided", note: "None given." },
     ],
@@ -72,14 +75,14 @@ export const issues: PaymentIssue[] = [
       {
         label: "Provider status",
         state: "not_checked",
-        note: "Not checked yet. Verification is coming in Phase 2.",
+        note: "No verification result was recorded for this case.",
       },
       { label: "UPI reference number", state: "not_provided", note: "None given." },
     ],
   },
 ];
 
-export const getOpenIssues = (list: PaymentIssue[] = issues) =>
+export const getOpenIssues = (list: readonly IssueSummary[] = issues) =>
   list.filter((i) => i.status !== "resolved");
 
 export const getIssue = (id: string) => issues.find((i) => i.id === id);

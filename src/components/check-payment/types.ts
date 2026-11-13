@@ -8,23 +8,5 @@ export interface PaymentFormValues {
   upiReference: string;
 }
 
-/** Validated, typed request. This is what a Phase 2 verification service receives. */
-export interface PaymentCheckRequest {
-  amountRupees: number;
-  approximateTime: string;
-  upiReference?: string;
-}
-
 export type PaymentFormErrors = Partial<Record<keyof PaymentFormValues, string>>;
-
-export type PaymentCheckOutcome =
-  /** Phase 1B: no verification service is connected yet. Nothing was checked. */
-  { status: "not_connected" };
-
-export type VoiceState =
-  | "idle"
-  | "recording"
-  | "processing"
-  | "success"
-  | "error"
-  | "permission-denied";
+export type { PaymentCheckOutcome, PaymentCheckRequest } from "@/lib/payments/types";

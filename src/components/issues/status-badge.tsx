@@ -3,6 +3,7 @@ import { issueStatusMeta, type IssueStatus } from "@/data/issues";
 import { cn } from "@/lib/utils";
 
 const styles: Record<IssueStatus, { cls: string; Icon: typeof CircleAlert }> = {
+  open: { cls: "bg-cyan-soft text-navy", Icon: Clock3 },
   not_verified: { cls: "bg-red-50 text-danger", Icon: CircleAlert },
   awaiting_status_check: { cls: "bg-amber-50 text-warning", Icon: Clock3 },
   resolved: { cls: "bg-green-50 text-success", Icon: CircleCheck },

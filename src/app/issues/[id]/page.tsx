@@ -2,6 +2,8 @@ import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { CircleAlert, Clock3, Info } from "lucide-react";
 import { PageHeader } from "@/components/layout/page-header";
+import { SavedIssueDetail } from "@/components/issues/saved-issue-detail";
+import { savedCaseIdPattern } from "@/lib/issues/cases";
 import { StatusBadge } from "@/components/issues/status-badge";
 import { getIssue, issues, issueStatusMeta, type EvidenceState } from "@/data/issues";
 import { formatDateTime, formatINR } from "@/lib/utils";
@@ -27,6 +29,7 @@ export default function IssueDetailPage({ params }: PageProps<"/issues/[id]">) {
 
 async function IssueDetail({ params }: { params: PageProps<"/issues/[id]">["params"] }) {
   const { id } = await params;
+  if (savedCaseIdPattern.test(id)) return <SavedIssueDetail id={id} />;
   const issue = getIssue(id);
   if (!issue) notFound();
 
@@ -92,8 +95,8 @@ async function IssueDetail({ params }: { params: PageProps<"/issues/[id]">["para
       <div role="note" className="flex gap-3 rounded-2xl border border-line bg-cyan-soft p-4 text-sm leading-relaxed text-navy">
         <Info size={20} strokeWidth={2} className="mt-0.5 shrink-0" aria-hidden="true" />
         <p>
-          This case is not confirmed as received. Payment verification will be connected in Phase 2.
-          A claim or screenshot is not proof of payment, and no match is not proof of fraud.
+          Case status reflects the original report. Use Check Payment for a separate demo verification.
+          A screenshot alone is insufficient to confirm receipt, and a missing match is insufficient to establish fraud.
         </p>
       </div>
     </>

@@ -1,14 +1,13 @@
 import { PageHeader } from "@/components/layout/page-header";
-import { IssueList } from "@/components/issues/issue-list";
-import { issues } from "@/data/issues";
+import { BrowserIssueList } from "@/components/issues/saved-issue-lists";
 
 export const metadata = { title: "Issues · Paytm Resolve" };
 
 export default function IssuesPage() {
   return (
     <>
-      <PageHeader title="Issues" description="Payment cases reported by customers. Demo data." />
-      <IssueList issues={issues} />
+      <PageHeader title="Issues" description="Demo payment cases. New cases are saved in this browser." />
+      <BrowserIssueList />
     </>
   );
 }
